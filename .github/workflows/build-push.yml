@@ -5,6 +5,8 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  schedule:
+    - cron: "0 0 * * 0" # Rebuild the image once a week
 
 jobs:
   build:
@@ -17,6 +19,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-      if: github.event_name == 'push'
+      if: github.event_name != 'pull_request'
     - run: make push
-      if: github.event_name == 'push'
+      if: github.event_name != 'pull_request'
