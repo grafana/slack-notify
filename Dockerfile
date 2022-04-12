@@ -1,6 +1,11 @@
-FROM debian:jessie-slim
-RUN apt-get update && apt-get install -y ca-certificates
+FROM golang:1.18-alpine as build
 
-COPY rootfs /
+WORKDIR /app
+COPY . .
+RUN CGO_ENABLED=0 go build -o slack-notify *.go
 
-CMD /slack-notify
+FROM alpine:latest
+
+COPY --from=build /app/slack-notify /app/
+
+CMD /app/slack-notify
