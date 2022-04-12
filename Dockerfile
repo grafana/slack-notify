@@ -6,6 +6,6 @@ RUN CGO_ENABLED=0 go build -o slack-notify *.go
 
 FROM alpine:latest
 
-COPY --from=build /app/slack-notify /app/
+COPY --from=build /app/slack-notify /
 
-CMD /app/slack-notify
+CMD /slack-notify
